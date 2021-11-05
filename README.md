@@ -8,3 +8,4 @@ This repository contains documentation and releases for the Bynder Sitecore Conn
 
 ## Releases
 
+Current: [v2.0.0](https://github.com/ParTech/Bynder-Sitecore-Connector-Releases/releases/tag/v2.0.0)
