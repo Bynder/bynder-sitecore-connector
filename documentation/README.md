@@ -30,8 +30,11 @@ If you are using _Sitecore Experience Accelerator (SXA)_ or _Sitecore JavaScript
 ### Installation package
 
 The connector is provided as a Sitecore Installation Package.  
-Simply download the `Bynder-Sitecore-Connector_X.X.X_Installation-Package.zip` package and install it using the [Sitecore Package Installation Wizard](https://doc.sitecore.com/en/SdnArchive/Articles/Administration/Installing%20Modules%20and%20Packages.html) in the Sitecore Client.
+Simply download the `Bynder-Sitecore-Connector_X.X.X_Installation-Package_X.X-X.X.zip` package and install it using the [Sitecore Package Installation Wizard](https://doc.sitecore.com/en/SdnArchive/Articles/Administration/Installing%20Modules%20and%20Packages.html) in the Sitecore Client.
 **DO NOT install a Sitecore package directly on a production environment without consulting your Sitecore system administrator!**
+
+Make sure to choose the package that is targeted at your Sitecore version.  
+We currently offer one package for Sitecore _9.3 to 10.2_ and another package for _Sitecore 9.0 to 9.2_.
 
 We highly recommend you to install the package on a (local) environment for testing purposes first before rolling it out across other environments.  
 Consult Bynder support if you need additional assistance or consultancy during the integration process.
