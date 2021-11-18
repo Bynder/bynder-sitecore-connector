@@ -8,4 +8,4 @@ This repository contains documentation and releases for the Bynder Sitecore Conn
 
 ## Releases
 
-Latest: [2.0.0](/releases/tag/2.0.0)
+Latest: [2.0.0](../../releases/tag/2.0.0)
