@@ -1,5 +1,7 @@
 # Bynder Sitecore Connector documentation
 
+_Updated for 2.1.0_
+
 The Bynder Sitecore Connector provides you with two methods of connecting your Sitecore platform to Bynder.  
 By leveraging the [Bynder Field Types](#using-the-bynder-field-types) you are able to store references to Bynder assets that allow you to embed the assets on your website, always reflecting the latest version of the asset in Bynder.  
 With the [Bynder Asset Import](#using-the-bynder-asset-import) you get to import assets from Bynder into the Sitecore Media Library. This allows you to apply the assets to the full range of Sitecore's features.
@@ -23,7 +25,7 @@ This documentation guides you through all aspects of the installation and usage 
 
 ### Supported Sitecore versions
 
-This module supports **Sitecore version 9.0 and higher**. Make sure to use the installation package that is suited for your version of Sitecore.
+This module supports **Sitecore version 9.3 and higher**. Make sure to use the installation package that is suited for your version of Sitecore.
 
 If you are using _Sitecore Experience Accelerator (SXA)_ or _Sitecore JavaScript Services (JSS)_ you will not be able to leverage the Bynder Field Types because they are targeted at Sitecore MVC renderings. You will however be able to use media items that are imported with the Bynder Asset Import.
 
@@ -31,10 +33,11 @@ If you are using _Sitecore Experience Accelerator (SXA)_ or _Sitecore JavaScript
 
 The connector is provided as a Sitecore Installation Package.  
 Simply [download](https://github.com/ParTech/Bynder-Sitecore-Connector-Releases/releases) the `Bynder-Sitecore-Connector_X.X.X_Installation-Package_X.X-X.X.zip` package and install it using the [Sitecore Package Installation Wizard](https://doc.sitecore.com/en/SdnArchive/Articles/Administration/Installing%20Modules%20and%20Packages.html) in the Sitecore Client.  
+
 **DO NOT install a Sitecore package directly on a production environment without consulting your Sitecore system administrator!**
 
 Make sure to choose the package that is targeted at your Sitecore version.  
-We currently offer one package for Sitecore _9.3 to 10.2_ and another package for _Sitecore 9.0 to 9.2_.
+We currently offer only one package that is target for _Sitecore 9.3 to 10.2_.
 
 We highly recommend you to install the package on a (local) environment for testing purposes first before rolling it out across other environments.  
 Consult Bynder support if you need additional assistance or consultancy during the integration process.
@@ -110,18 +113,25 @@ Make sure that your `web.config` configuration is properly updated according thi
 
 ## Upgrade instructions
 
+- [Upgrading from 1.x to 2.1](#upgrade-from-1.x)
+- [Upgrading from 2.0 to 2.1](#upgrade-from-2.0)
+
+### Upgrading from version 1.x (_Bynder Basic Sitecore Connector_ or _Bynder Advanced Sitecore Connector_)
+<a name="upgrade-from-1.x"></a>
 If you are upgrading from an older version of the connector (either the Bynder Basic Sitecore Connector or the Bynder Advanced Sitecore Connector), follow these upgrade instructions.
 
-### 1. Backup your environment
+#### 1. Backup your environment
 
 It's **really important** that you **create a backup** of your `master` and `core` database and the `webroot` of your Sitecore application, before applying the installation package! The effect of an upgrade cannot always be predicted so you really want a rollback scenario.
 
-### 2. Install the connector installation package
+#### 2. Install the connector installation package
 
 Install the Sitecore Installation Package as described in the [Installation package](#installation-package) chapter.  
 If you are prompted to choose wether to overwrite or skip items, choose to overwrite.
 
-### 3. Update your environment settings
+Make sure to follow all the installation steps before proceeding with upgrade step 3.
+
+#### 3. Update your environment settings
 
 If you were using the _Bynder Advanced Sitecore Connector_ previously, then you must recreate and relink your Bynder environment settings items.  
 
@@ -134,11 +144,11 @@ If you were using the _Bynder Advanced Sitecore Connector_ previously, then you 
     4. For each item listed, click **Link to Other Item** and select the new settings item from the content tree, e.g. `/sitecore/system/Modules/Bynder/Environments/Default`.
 4. Your environment settings are now recreated and relinked.
 
-### 4. Update your `web.config`
+#### 4. Update your `web.config`
 
 The connector requires an additional Content Security Policy (`frame-src`) and the MediaRequestHandler has been overridden. Follow the instructions from [Required web.config changes](#required-webconfig-changes) to update your `web.config` accordingly.
 
-### 5. Disable obsolete config files
+#### 5. Disable obsolete config files
 
 There is a new Sitecore config file for the connector which will conflict with the legacy config files.  
 Rename the following legacy config files to `*.disabled` (or remove them altogether) so they no longer affect the application:
@@ -146,7 +156,7 @@ Rename the following legacy config files to `*.disabled` (or remove them altoget
 - `<webroot>/App_Config/Include/Modules/Bynder/Bynder.Sitecore.Connector.config`
 - `<webroot>/App_Config/Include/Bynder/BynderSitecorePlugin.Commands.config`
 
-### 6. Workflow changes
+#### 6. Workflow changes
 
 The Bynder Workflow is no longer active on imported media items by default.  
 If you were using the Bynder Workflow and you would like to continue using that, you must manually reinstate it.
@@ -157,19 +167,39 @@ You can reinstate it by following these steps:
 2. Select the item in the tree and open the _Review_ ribbon.
 3. In the _Workflow_ section, click _Initial_ and choose the _Bynder Workflow_.
 
-### 7. Force synchronization of previously imported assets
+#### 7. Force synchronization of previously imported assets
 
 Because of changes to the MediaItem template, previously imported assets must be synchronized. 
 Perform this by selecting the Bynder root folder in the media library (e.g. `/sitecore/media library/Bynder`) and clicking **Synchronize (forced)** in the Ribbon.
 
 If you have multiple Bynder root folders in your media library, perform this task on each of them.
 
-### Note on legacy media items with '-DAT' suffix
+#### Note on legacy media items with '-DAT' suffix
 
 The previous version of the connector would import so called 'DAT' derivatives for assets. These derivatives did not serve any real purpose and will no longer be imported or updated through synchronization. They are **not to be confused with** assets that support _[Dynamic Asset Transformation (DAT)](https://support.bynder.com/hc/en-us/articles/360018559260-Dynamic-Asset-Transformations-DAT-)_.
 
 If your asset has _Dynamic Asset Transformation_ enabled and you have previously imported it with the old connector, then synchronization will **not** add the DAT enabled derivative for you asset. You must import the asset again to enable DAT.  
 Once reimported, the DAT derivative will be created using the '-transform' suffix (assuming your environment settings allow it). Also see: [Dynamic Asset Transformation (DAT) support](#dynamic-asset-transformation-dat-importer-support)
+
+### Upgrade from version 2.0
+<a name="upgrade-from-2.0"></a>
+#### 1. Backup your environment
+
+It's **really important** that you **create a backup** of your `master` and `core` database and the `webroot` of your Sitecore application, before applying the installation package! The effect of an upgrade cannot always be predicted so you really want a rollback scenario.
+
+#### 2. Install the connector installation package
+
+Install the Sitecore Installation Package as described in the [Installation package](#installation-package) chapter.  
+If you are prompted to choose wether to overwrite or skip items, choose to overwrite.
+
+Make sure to follow all the installation steps before proceeding with upgrade step 3.
+
+#### 3. Update your environment settings
+
+If you were using the _Bynder Advanced Sitecore Connector_ previously, then you must recreate and relink your Bynder environment settings items.  
+
+1. Using the Sitecore Content Editor, find your environment settings items under `/sitecore/system/Modules/Bynder/Environments`.
+2. For each `Environment Settings` item, update the fields related to authentication (_ClientId_ and _ClientSecret_). See: [Environment Settings](#environment-settings)
 
 ## Configuration
 
@@ -213,18 +243,46 @@ Environment settings are stored in `/sitecore/system/Modules/Bynder/Environments
 Configure the following information for your environment:
 
 - **EnvironmentUrl** is the URL to your Bynder portal, for example: `https://acme.bynder.com`
-- **ConsumerKey**, **ConsumerSecret**, **TokenKey** and **TokenSecret** are authentication details that are generated by your Bynder portal. See [API token](#api-token).
-- **Files to import** can be used to control what derivatives are imported. It supports the values:
+- **ClientId** and **ClientSecret** are authentication details that are generated by your Bynder portal. See [API token](#api-token).
+- **Derivatives to import** can be used to control what derivatives are imported. It supports the values:
     - **all** is the default value and will import all available derivatives.
     - **all-derivatives** will import all available derivatives, but not the original file.
     - **original** will only import the original file.
     - _**derivative-name**_ will only import specific derivatives. You may supply multiple values by separating them with a comma.
 - **Do not import BLOBs**, when this is enabled, the importer will not store the asset data in Sitecore, but only store the reference (CDN) URL for the asset. 
 
+##### "Do not import BLOBs" setting
+
+When this setting is enabled on the _Environment Settings_ item or on the Bynder Media Folder item, the importer will not store the asset data in Sitecore, but only store the reference (CDN) URL for the asset. 
+It's important to mention that enabling this feature **will only allow public assets to be imported**! Reason being that if an asset is not public, there is no CDN URL available to store in Sitecore.
+
+If you leave `Do not import BLOBs` disabled, then assets are always imported, even when they are not public.
+
+##### Override settings on the Bynder Media folder
+
+You can override a couple of settings directly on the Bynder Media folder item. That way you don't always have to create a separate Environment Settings item.
+
+<img src="./images/override-settings.png">
+
 #### API token
 
-Please note that the connector requires your Bynder application to **support OAuth 1 API tokens** which first **must be enabled by Bynder Support** in most cases.  
-Try to follow the instructions from [Create API tokens for your app](https://support.bynder.com/hc/articles/360017186940#UUID-e905eb1e-78b7-2783-2c5f-a73fe23021a7) and if you don't see the correct options in your portal, contact Bynder Support and ask them to enable OAuth 1 support.
+You must create an OAuth App in your [Bynder Portal Settings](https://partech-demo.bynder.com/pysettings/oauth2/) to allow Sitecore to connect to Bynder.   
+Follow the instructions from [Create your OAuth Apps](https://support.bynder.com/hc/en-us/articles/360013875180) on the Bynder Support portal. That will guide you through the process of creating an OAuth App and retrieving the ClientId and CLientSecret tokens.  
+**Make sure to choose grant type 'Client Credentials' for your OAuth App!**
+
+##### Overview of OAuth App settings
+
+This is a quick overview of steps required to create a suitable OAuth App:
+
+1. Navigate to the [OAuth Apps](https://partech-demo.bynder.com/pysettings/oauth2/) section of your Bynder Portal Settings.
+2. Choose `Add new app`.
+3. Fill in the desired `Application name`.
+4. Select grant type `Client Credentials` and select a user that represents the permissions the app will take.
+5. Select the desired scopes. The minimum should be: `asset:read`, `asset:write`, `asset.usage:read` and `asset.usage:write`.
+6. Click `Register application` to finish.
+7. You will now receive the `ClientId` and `ClientSecret` tokens.
+
+#### Set environment settings on Bynder Media Folder.
 
 You may create multiple environment settings items and they can be linked to a specific Bynder media folder.  
 To link environment settings to a Bynder media folder, first select the folder in the content tree so that the Bynder ribbon appears. Then click _Set Environment_ in the ribbon and select the desired enviroment.
@@ -263,8 +321,8 @@ Developers that want to render Bynder Field Types in Sitecore renderings (compon
 ```
 @using Bynder.SitecoreConnector.Extensions
 
-var singleAsset = Model.Item["Single Asset demo field"].ConvertToBynderAsset();
-var multiAssets = Model.Item["Multi Assets demo field"].ConvertToBynderAssets();
+var singleAsset = Model.Item.GetBynderSingleAssetField("Single Asset demo field");
+var multiAssets = Model.Item.GetBynderMultiAssetsField("Multi Assets demo field");
 ```
 
 The Multi Assets field will simply return a collection of single assets.
@@ -292,17 +350,17 @@ The resulting object provides access to most Bynder asset data:
 The resulting object also provides access to certain asset derivatives, for example:
 
 ```
-<img src="@singleAsset.Thumbnails["webimage"]" />
+<img src="@singleAsset.Thumbnails.WebImage" />
 ```
 
 ### Dynamic Asset Transformation (DAT) support
 
 The Bynder Field Type also provides access to the [Dynamic Asset Transformation](https://support.bynder.com/hc/en-us/articles/360018559260-Dynamic-Asset-Transformations-DAT-) URL of an asset if that is available in Bynder.  
-This URL is stored in the `transformBaseUrl` thumbnail:
+This URL is stored in the `TransformBaseUrl` property:
 
 ```
 // Example of how to apply Dynamic Asset Transformation
-string transformUrl = singleAsset.Thumbnails["transformBaseUrl"];
+string transformUrl = singleAsset.TransformBaseUrl;
 string transformations = "?io=filter:sepia";
 
 <img src="@(transformUrl + transformations)">
@@ -323,6 +381,15 @@ In order to import assets, first select a Bynder media folder in the media libra
 
 If this is the first time you are using the connector, you will be required to login to your Bynder portal first.  
 You are now presented with the [Compact View](https://support.bynder.com/hc/en-us/articles/360014369640#UUID-eb5b394d-4148-0471-d3bb-cabb368ca003) and are able to search and select the assets your wish to import.
+
+Once you have selected your assets and confirm, you are presented with a progress indicator while your assets are being imported.
+
+<img src="./images/progress.png">
+
+#### Video assets
+
+When you import Video assets, only the original assets will be imported. 
+Besides the video file, the imported item will contain a `Video Preview Url` and `Video Thumbnail Url` field.
 
 ### Synchronizing assets
 
@@ -361,7 +428,27 @@ And just like with assets in Bynder, we can add as many transformations as we'd 
 
 <img src="./images/transform-3.png">
 
+### Asset Tracker feature
+
+Bynder offers a feature to indicate whether assets are being used on other platforms. More information on how this works on the Bynder site can be found here: [https://support.bynder.com/hc/en-us/articles/360013933619-Track-asset-usage](https://support.bynder.com/hc/en-us/articles/360013933619-Track-asset-usage)
+
+The imported also supports this feature, which is enabled by default. 
+When you import an asset, it's usage in Sitecore is tracked in Bynder. When you remove the asset, it's automatically untracked.
+
+This is visualized in Bynder as such:
+
+<img src="./images/asset-tracker.png">
+
+Instead of a URL, the item ID that represents the Bynder Media Item in Sitecore is stored.
+
+#### Disabling the Asset Tracker feature
+
+Because tracking asset usage requires calls to Bynder, this feature has a negative effect on the performance of importing and removing assets. 
+You can disable Asset Tracking by setting the `Bynder.SitecoreConnector.AssetTracker.Enabled` parameter in the `App_Config\Include\Bynder\Bynder.SitecoreConnector.config` file to `false`.
+
 ### Importer limitations
+
+When importing Video assets, only the original asset is imported.
 
 Currently we don't support importing audio assets from Bynder to Sitecore.
 

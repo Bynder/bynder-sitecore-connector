@@ -6,6 +6,14 @@ This repository contains documentation and releases for the Bynder Sitecore Conn
 
 [Proceed to the documentation](./documentation)
 
-## Releases
+## Demonstration video
 
-Latest: [2.0.0](../../releases/tag/2.0.0)
+[Watch the demonstration video on YouTube](https://www.youtube.com/watch?v=fyZy2SIFckQ)
+
+## Release notes & downloads
+
+Latest release:
+- [2.1.0](../../releases/tag/2.1.0)
+
+Old releases:
+- [2.0.0](../../releases/tag/2.0.0)
