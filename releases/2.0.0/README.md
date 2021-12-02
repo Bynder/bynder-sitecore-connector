@@ -2,8 +2,11 @@
 
 ### Import notice:
 
-THIS RELEASE CONTAINS BREAKING CHANGES.
+THIS RELEASE CONTAINS BREAKING CHANGES.  
 **MAKE SURE TO READ THE DOCUMENTATION BEFORE UPGRADING!!**
+
+This release is only to be used for Sitecore 9.0 up to 9.2.  
+**If you are using Sitecore 9.3 or higher, please refer to the [latest release](https://github.com/Bynder/bynder-sitecore-connector/releases/latest).**
 
 ### Breaking changes:
 
