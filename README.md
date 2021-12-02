@@ -13,7 +13,7 @@ This repository contains documentation and releases for the Bynder Sitecore Conn
 ## Release notes & downloads
 
 Latest release:
-- [2.1.0](../../releases/tag/2.1.0)
+- [2.1.0](../../releases/tag/2.1.0) (supports Sitecore 9.3 and higher)
 
 Old releases:
-- [2.0.0](../../releases/tag/2.0.0)
+- [2.0.0](../../releases/tag/2.0.0) (supports Sitecore 9.0 - 9.2)
