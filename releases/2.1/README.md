@@ -1,9 +1,9 @@
-# 2.1.0
+# 2.1
 
 ### Import notice:
 
 THIS RELEASE CONTAINS BREAKING CHANGES.
-**MAKE SURE TO READ THE DOCUMENTATION BEFORE UPGRADING!!**
+**MAKE SURE TO [READ THE DOCUMENTATION](https://github.com/ParTech/Bynder-Sitecore-Connector-Releases/tree/master/documentation) BEFORE UPGRADING!!**
 
 ### Breaking changes:
 
@@ -27,3 +27,7 @@ THIS RELEASE CONTAINS BREAKING CHANGES.
 ### Bug fixes:
 
 - Certain media information such as width, height and description was not being stored in Sitecore.
+
+### Hotfixes:
+
+- **2.1.1** : Incorrect SDK build caused Newtonson.Json exception in the Bynder Asset Fields.
