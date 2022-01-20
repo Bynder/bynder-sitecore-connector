@@ -1,6 +1,6 @@
 # Bynder Sitecore Connector documentation
 
-_Updated for 2.1.0_
+_Updated for 2.2.0_
 
 The Bynder Sitecore Connector provides you with two methods of connecting your Sitecore platform to Bynder.  
 By leveraging the [Bynder Field Types](#using-the-bynder-field-types) you are able to store references to Bynder assets that allow you to embed the assets on your website, always reflecting the latest version of the asset in Bynder.  
@@ -12,7 +12,7 @@ This documentation guides you through all aspects of the installation and usage 
 - [Upgrade instructions](#upgrade-instructions)
 - [Configuration](#configuration)
 - [Using the Bynder Field Types](#using-the-bynder-field-types)
-- [Using the Bynder Asset Import](#using-the-bynder-asset-import)
+- [Using the Bynder Asset Import](#using-the-bynder-asset-import)s
 
 ## Installation
 
@@ -42,6 +42,10 @@ We currently offer only one package that is target for _Sitecore 9.3 to 10.2_.
 We highly recommend you to install the package on a (local) environment for testing purposes first before rolling it out across other environments.  
 Consult Bynder support if you need additional assistance or consultancy during the integration process.
 
+### NuGet package
+
+_Instructions for installation using NuGet will be added later._
+
 ### Required `web.config` changes
 
 The connector requires several changes to the `web.config` of your Sitecore application in order to function correctly. You must manually apply these changes as the installation package is not capable of performing this update.
@@ -53,11 +57,27 @@ The connector requires several changes to the `web.config` of your Sitecore appl
 
 The connector needs to override Sitecore's default media requesthandler to facilitate redirecting to Bynder CDN uri if you are not storing Blob data (i.e. if you are not storing a copy of Bynder's binary data).
 
+***Skip ahead if you are using [Sitecore Experience Accelerator (SXA)](#override-mediarequesthandler-for-sxa).***
+
 Locate the handler configuration in the `web.config` and update the handler for path `sitecore_media.ashx` to the type `Bynder.SitecoreConnector.Providers.BynderMediaRequestHandler, Bynder.SitecoreConnector` as demonstrated in this example:
 
 ```
 <handlers>
   <add verb="*" path="sitecore_media.ashx" type="Bynder.SitecoreConnector.Providers.BynderMediaRequestHandler, Bynder.SitecoreConnector" name="Sitecore.MediaRequestHandler"/>
+
+  <!-- ... snipped other headers for simplicity ... -->
+</handlers>
+```
+
+##### Override MediaRequestHandler for SXA
+
+If you are using Sitecore Experience Accelerator (SXA), you must configure a different media requesthandler because SXA has its own implementation for this.
+
+Locate the handler configuration in the `web.config` and update the handler for path `sitecore_media.ashx` to the type `Bynder.SitecoreConnector.Providers.BynderSxaMediaRequestHandler, Bynder.SitecoreConnector` as demonstrated in this example:
+
+```
+<handlers>
+  <add verb="*" path="sitecore_media.ashx" type="Bynder.SitecoreConnector.Providers.BynderSxaMediaRequestHandler, Bynder.SitecoreConnector" name="Sitecore.MediaRequestHandler"/>
 
   <!-- ... snipped other headers for simplicity ... -->
 </handlers>
@@ -72,7 +92,7 @@ In order for the Bynder Sitecore Connector to be able to connect to Bynder and p
 The following Content Security Policies must be configured:
 
 ```
-img-src https://YOUR-BYNDER-HOST.bynder.com;
+img-src https://YOUR-BYNDER-HOST.bynder.com https://cdn2.webdamdb.com;
 frame-src https://YOUR-BYNDER-HOST.bynder.com; 
 script-src https://d8ejoa1fys2rk.cloudfront.net; 
 style-src https://d8ejoa1fys2rk.cloudfront.net; 
@@ -93,7 +113,7 @@ When applied to the **default** Sitecore `web.config` (again, this applies to Si
 
         <add name="Content-Security-Policy" 
              value="default-src 'self' 'unsafe-inline' 'unsafe-eval'; 
-                    img-src 'self' data: https://YOUR-BYNDER-HOST.bynder.com; 
+                    img-src 'self' data: https://YOUR-BYNDER-HOST.bynder.com https://cdn2.webdamdb.com; 
                     frame-src 'self' https://YOUR-BYNDER-HOST.bynder.com; 
                     script-src 'self' 'unsafe-inline' 'unsafe-eval' https://d8ejoa1fys2rk.cloudfront.net; 
                     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://d8ejoa1fys2rk.cloudfront.net; 
@@ -208,7 +228,7 @@ If you were using the _Bynder Advanced Sitecore Connector_ previously, then you 
 
 ### Configuring the Bynder Field Types
 
-The connector provides you with two new Sitecore field types: _Bynder Single Asset Selector_ and _Bynder Multi Asset Selector_.  
+The connector provides you with three new Sitecore field types: _Bynder Single Asset Selector_, _Bynder Multi Asset Selector_ and _Bynder Single Asset File Selector_.  
 You can use these fields in your templates to allow editors to select Bynder assets while editing items based on those templates.
 
 <img src="./images/field-types.png">
@@ -216,6 +236,11 @@ You can use these fields in your templates to allow editors to select Bynder ass
 No additional configuration is required in order for editors to use these field types.
 
 In order to use the content from these fields in Sitecore renderings, developers need to leverage a couple of C# methods that are supplied by the connector. This is described in [Using the Bynder Field values in your components](#using-the-bynder-field-values-in-your-components).
+
+#### Single Asset File field type
+
+The asset fields allow users to select one or more assets and it's then up to the developer to choose which derivative to use.  
+If you'd like users to select a specific derivative, you can use the _Bynder Single Asset File Selector_ field type for that.
 
 ### Configuring the Bynder Asset Import
 
@@ -250,6 +275,7 @@ Configure the following information for your environment:
     - **original** will only import the original file.
     - _**derivative-name**_ will only import specific derivatives. You may supply multiple values by separating them with a comma.
 - **Do not import BLOBs**, when this is enabled, the importer will not store the asset data in Sitecore, but only store the reference (CDN) URL for the asset. 
+- **Asset types in Compact View**, this can be used to limit the types of assets that the user sees in the Compact View (asset selector). Default value is `image,video,document`.
 
 ##### "Do not import BLOBs" setting
 
@@ -260,7 +286,7 @@ If you leave `Do not import BLOBs` disabled, then assets are always imported, ev
 
 ##### Override settings on the Bynder Media folder
 
-You can override a couple of settings directly on the Bynder Media folder item. That way you don't always have to create a separate Environment Settings item.
+You can override most environment settings directly on the Bynder Media folder item. That way you don't always have to create a separate Environment Settings item.
 
 <img src="./images/override-settings.png">
 
@@ -278,7 +304,7 @@ This is a quick overview of steps required to create a suitable OAuth App:
 2. Choose `Add new app`.
 3. Fill in the desired `Application name`.
 4. Select grant type `Client Credentials` and select a user that represents the permissions the app will take.
-5. Select the desired scopes. The minimum should be: `asset:read`, `asset:write`, `asset.usage:read` and `asset.usage:write`.
+5. Select the desired scopes. The minimum should be: `asset:read`, `asset.usage:read` and `asset.usage:write`.
 6. Click `Register application` to finish.
 7. You will now receive the `ClientId` and `ClientSecret` tokens.
 
@@ -323,6 +349,7 @@ Developers that want to render Bynder Field Types in Sitecore renderings (compon
 
 var singleAsset = Model.Item.GetBynderSingleAssetField("Single Asset demo field");
 var multiAssets = Model.Item.GetBynderMultiAssetsField("Multi Assets demo field");
+var singleAssetFile = Model.Item.GetBynderSingleAssetFileField("Single Asset File demo field");
 ```
 
 The Multi Assets field will simply return a collection of single assets.
@@ -334,33 +361,47 @@ The resulting object provides access to most Bynder asset data:
     <h1>Bynder Single Asset example</h1>
     @if (singleAsset != null)
     {
-        <p>Id = @singleAsset.Id</p>
+        <p>Id = @singleAsset.DatabaseId</p>
         <p>Name = @singleAsset.Name</p>
-        <p>Description = @singleAsset.Description</p>
-        <p>BrandId = @singleAsset.BrandId</p>
-        <p>Archive = @singleAsset.Archive</p>
-        <p>Copyright = @singleAsset.Copyright</p>
-        <p>Date created = @singleAsset.DateCreated.ToString("yyyy MMMM dd")</p>
         
-        <!-- More properties available, but left out for simplicity's sake -->
+        <h2>Derivatives</h2>
+        foreach (var kvp in singleAsset.Derivatives)
+        {
+            <p>@kvp.Key = @kvp.Value.Url</p>
+        }
     }
 </div>
 ```
 
-The resulting object also provides access to certain asset derivatives, for example:
+The _Single Asset File_ field will provide a slightly different model:
 
 ```
-<img src="@singleAsset.Thumbnails.WebImage" />
+<div>
+    <h1>Bynder Single Asset example</h1>
+    @if (singleAsset != null)
+    {
+        <p>Id = @singleAsset.DatabaseId</p>
+        <p>Name = @singleAsset.Name</p>
+        <p>URL = @singleAssetFile.SelectedFile.Url</p>
+        <p>Thumbnail = @singleAssetFile.Thumbnail.Url</p>
+    }
+</div>
 ```
+
+### Bynder C# SDK dependency
+
+In order to be able to use the Bynder asset fields in your view, your solution must have a reference to the Bynder C# SDK (`Bynder.Sdk.dll`).  
+This assembly is included in the installation package and in the NuGet package of the Bynder Sitecore Connector.  
+You should always reference the assembly that we supply and not the Bynder C# SDK that is publically available in NuGet because the latter is not compatible with all versions of Sitecore.
 
 ### Dynamic Asset Transformation (DAT) support
 
 The Bynder Field Type also provides access to the [Dynamic Asset Transformation](https://support.bynder.com/hc/en-us/articles/360018559260-Dynamic-Asset-Transformations-DAT-) URL of an asset if that is available in Bynder.  
-This URL is stored in the `TransformBaseUrl` property:
+This URL is stored in the `transformBaseUrl` derivative:
 
 ```
 // Example of how to apply Dynamic Asset Transformation
-string transformUrl = singleAsset.TransformBaseUrl;
+string transformUrl = singleAsset.Derivatives["transformBaseUrl"].Url;
 string transformations = "?io=filter:sepia";
 
 <img src="@(transformUrl + transformations)">
@@ -375,7 +416,7 @@ Looking for information on DAT support for the Bynder Asset Import? See [Dynamic
 
 ### Importing assets
 
-In order to import assets, first select a Bynder media folder in the media library and then click one of the _Import from Bynder_ buttons.
+In order to import assets, first select a Bynder media folder in the media library and then click one of the _Import assets from Bynder_ buttons.
 
 <img src="./images/import-button.png"> <img src="./images/import-button2.png">
 
@@ -385,6 +426,12 @@ You are now presented with the [Compact View](https://support.bynder.com/hc/en-u
 Once you have selected your assets and confirm, you are presented with a progress indicator while your assets are being imported.
 
 <img src="./images/progress.png">
+
+#### Import single file
+
+If you do not wish to import all (configured) derivatives of a certain asset, but would like to select a specific derivative to import, you should use _Import single file from Bynder_.
+
+<img src="./images/import-file-button.png"> <img src="./images/import-file-button2.png">
 
 #### Video assets
 
@@ -428,6 +475,14 @@ And just like with assets in Bynder, we can add as many transformations as we'd 
 
 <img src="./images/transform-3.png">
 
+
+#### Using DAT in the Rich-Text editor
+
+If you select an imported DAT asset in the Rich-Text editor, you can apply the DAT parameters in the resulting HTML.
+
+<img src="./images/dat-rte.png">
+
+
 ### Asset Tracker feature
 
 Bynder offers a feature to indicate whether assets are being used on other platforms. More information on how this works on the Bynder site can be found here: [https://support.bynder.com/hc/en-us/articles/360013933619-Track-asset-usage](https://support.bynder.com/hc/en-us/articles/360013933619-Track-asset-usage)
@@ -452,4 +507,4 @@ When importing Video assets, only the original asset is imported.
 
 Currently we don't support importing audio assets from Bynder to Sitecore.
 
-Only basic asset information such as width, height and the MIME type are imported with the asset. Bynder metaproperties or tags are not imported.
+Only basic asset information such as width, height and the MIME type are imported with the asset. Bynder metaproperties or tags are not yet imported.
