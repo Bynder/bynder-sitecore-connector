@@ -18,6 +18,7 @@ This documentation guides you through all aspects of the installation and usage 
 
 - [Supported Sitecore versions](#supported-sitecore-versions)
 - [Installation package](#installation-package)
+- [NuGet package](#nuget-package)
 - [Required web.config changes](#required-webconfig-changes)
 
 **If you are upgrading from _Bynder Basic Sitecore Connector_ or _Bynder Advanced Sitecore Connector_,**   
@@ -44,7 +45,24 @@ Consult Bynder support if you need additional assistance or consultancy during t
 
 ### NuGet package
 
-_Instructions for installation using NuGet will be added later._
+The Sitecore Installation Package that we provide is quick and easy method for installing the Bynder Sitecore Connector in a demo or test environment, but can be a bit cumbersome to integrate into a Visual Studio solution.  
+For that purpose we also provide a NuGet package that can easily be added to a Visual Studio project.  
+
+The NuGet package is listed under the package ID `Bynder.Sitecore.Connector`.
+
+<img src="./images/nuget.png" />
+
+After you install the NuGet package, you must publish the contents of the package to your Sitecore webroot.  
+Always make sure you have a backup of your webroot and your Sitecore content databases before attempting to install any external module.
+
+If it's the first time you publish to your Sitecore webroot, you must update your tree with the serialized items provided by our package in order to create the Bynder Sitecore Connector items in your environment by following these steps:
+
+- **Warning:** If your `App_Data\serialization` folder already has existing data, you should (temporarily) remove that so the deserialization proces does not unintentionally update existing items.
+- Login to Sitecore.
+- In the Content Editor, enable the Developer ribbon.
+- Select the `/sitecore` root node in the content tree.
+- Choose `Update tree`.
+- Your content is now up to date.
 
 ### Required `web.config` changes
 
