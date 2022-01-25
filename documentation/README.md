@@ -322,7 +322,7 @@ This is a quick overview of steps required to create a suitable OAuth App:
 2. Choose `Add new app`.
 3. Fill in the desired `Application name`.
 4. Select grant type `Client Credentials` and select a user that represents the permissions the app will take.
-5. Select the desired scopes. The minimum should be: `asset:read`, `asset.usage:read` and `asset.usage:write`.
+5. Select the desired scopes. The minimum should be: `asset:read`, `asset:write`, `asset.usage:read`, `asset.usage:write` and `collection:read`.
 6. Click `Register application` to finish.
 7. You will now receive the `ClientId` and `ClientSecret` tokens.
 
