@@ -329,9 +329,6 @@ Configure the following information for your environment:
 ##### "Do not import BLOBs" setting
 
 When this setting is enabled on the _Environment Settings_ item or on the Bynder Media Folder item, the importer will not store the asset data in Sitecore, but only store the reference (CDN) URL for the asset. 
-It's important to mention that enabling this feature **will only allow public assets to be imported**! Reason being that if an asset is not public, there is no CDN URL available to store in Sitecore.
-
-If you leave `Do not import BLOBs` disabled, then assets are always imported, even when they are not public.
 
 ##### Override settings on the Bynder Media folder
 
@@ -496,8 +493,11 @@ In order to import assets, first select a Bynder media folder in the media libra
 
 If this is the first time you are using the connector, you will be required to login to your Bynder portal first.  
 You are now presented with the [Compact View](https://support.bynder.com/hc/en-us/articles/360014369640#UUID-eb5b394d-4148-0471-d3bb-cabb368ca003) and are able to search and select the assets your wish to import.
-
+whe
 Once you have selected your assets and confirm, you are presented with a progress indicator while your assets are being imported.
+
+We only import the **public derivatives** of an asset. This usually means that, unless an asset has been marked as public, only the thumbnail derivatives (thumbnail, mini, webimage) are imported and not the _original_ file. 
+If you want the original file to be imported as well, it must be made publically available by marking the asset as public.
 
 <img src="./images/progress.png">
 
