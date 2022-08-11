@@ -1,6 +1,6 @@
 # Bynder Sitecore Connector documentation
 
-_Updated for 2.3.0_
+_Updated for 2.3.1_
 
 The Bynder Sitecore Connector provides you with two methods of connecting your Sitecore platform to **[Bynder Digital Asset Management](https://www.bynder.com/en/products/digital-asset-management/)** and to **[Webdam](https://www.bynder.com/en/webdam/)**.  
 By leveraging the [Bynder Field Types](#4-using-the-bynder-field-types) you are able to store references to Bynder assets that allow you to embed the assets on your website, always reflecting the latest version of the asset in Bynder.  
