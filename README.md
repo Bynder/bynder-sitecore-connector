@@ -3,11 +3,13 @@
 This repository contains documentation and releases for the **deprecated** Bynder Sitecore Connector.
 
 <hr />
+
 **IMPORTANT: This variant of the Bynder Sitecore integration is deprecated and no longer recommended for new customers!**  
 **It has been replaced by the [Bynder DAM Connector for Sitecore XP/XM](https://bynder.humandigital.services/).**
 **This repository only exists as a reference for existing customers and only existing customers will continue to receive support for this connector.**
 
 If you are not already using the Bynder Sitecore Connector, then please visit the [dedicated portal](https://bynder.humandigital.services/) for the [Bynder DAM Connector for Sitecore XP/XM](https://bynder.humandigital.services/).
+
 <hr />
 
 ## Documentation
