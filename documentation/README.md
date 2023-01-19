@@ -2,6 +2,14 @@
 
 _Updated for 2.3.1_
 
+<hr />
+**IMPORTANT: This variant of the Bynder Sitecore integration is deprecated and no longer recommended for new customers!**  
+**It has been replaced by the [Bynder DAM Connector for Sitecore XP/XM](https://bynder.humandigital.services/).**
+**This repository only exists as a reference for existing customers and only existing customers will continue to receive support for this connector.**
+
+If you are not already using the Bynder Sitecore Connector, then please visit the [dedicated portal](https://bynder.humandigital.services/) for the [Bynder DAM Connector for Sitecore XP/XM](https://bynder.humandigital.services/).
+<hr />
+
 The Bynder Sitecore Connector provides you with two methods of connecting your Sitecore platform to **[Bynder Digital Asset Management](https://www.bynder.com/en/products/digital-asset-management/)** and to **[Webdam](https://www.bynder.com/en/webdam/)**.  
 By leveraging the [Bynder Field Types](#4-using-the-bynder-field-types) you are able to store references to Bynder assets that allow you to embed the assets on your website, always reflecting the latest version of the asset in Bynder.  
 With the [Bynder Asset Import](#5-using-the-bynder-asset-import) you get to import assets from Bynder or Webdam into the Sitecore Media Library. This allows you to apply the assets to the full range of Sitecore's features.
